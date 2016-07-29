@@ -6,18 +6,18 @@
  */
 package uk.co.sleonard.unison.output;
 
-import java.awt.FileDialog;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.util.Vector;
 
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JTable;
-
+import javafx.application.Platform;
+import javafx.scene.control.TableView;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
+import uk.co.sleonard.unison.UNISoNControllerFX;
 import uk.co.sleonard.unison.UNISoNException;
+import uk.co.sleonard.unison.gui.PajekPanelFX.MatrixModelTableView;
 
 /**
  * The Class ExportToCSV.
@@ -52,8 +52,7 @@ public class ExportToCSV {
 	 * @throws UNISoNException
 	 *             the UNI so n exception
 	 */
-	public void exportTable(final String fileName, final JTable table, final Vector<String> fieldNames)
-			throws UNISoNException {
+	public void exportTable(final String fileName, final TableView<MatrixModelTableView> table) throws UNISoNException {
 		try {
 			final File file = new File(fileName);
 			if (file != null) {
@@ -65,24 +64,27 @@ public class ExportToCSV {
 				try (final BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(file, true));
 						final PrintWriter fileWriter = new PrintWriter(bufferedWriter);) {
 					String data;
-					for (int j = 0; j < table.getColumnCount(); ++j) {
+					for (int j = 0; j < table.getColumns().size(); ++j) {
 
 						// replace any commas in data!
-						data = this.extractCommas(fieldNames.get(j));
+						data = this.extractCommas(table.getColumns().get(j).getText());
 
 						fileWriter.print(data + ",");
 					}
 					fileWriter.println("");
-					for (int i = 0; i < table.getRowCount(); ++i) {
-						for (int j = 0; j < table.getColumnCount(); ++j) {
-							data = this.extractCommas(table.getValueAt(i, j).toString());
-							fileWriter.print(data + ",");
-						}
+					for (int i = 0; i < table.getItems().size(); ++i) {
+						MatrixModelTableView model = table.getItems().get(i);
+						StringBuffer stb = new StringBuffer();
+						stb.append(model.getSubject()).append(",").append(model.getDate()).append(",")
+								.append(model.getFrom()).append(",").append(model.getTo());
+						fileWriter.print(stb.toString());
 						fileWriter.println("");
 					}
 					fileWriter.close();
 				} catch (final Exception e) {
-					JOptionPane.showMessageDialog(null, "Error " + e);
+					Platform.runLater(() -> {
+						UNISoNControllerFX.getGui().showAlert("Error " + e);
+					});
 				}
 			}
 
@@ -97,34 +99,29 @@ public class ExportToCSV {
 	 *
 	 * @param table
 	 *            the table
-	 * @param fieldNames
-	 *            the field names
 	 * @throws UNISoNException
 	 *             the UNI so n exception
 	 */
-	@SuppressWarnings("deprecation")
-	public void exportTableToCSV(final JTable table, final Vector<String> fieldNames) throws UNISoNException {
-		final FileDialog file = new FileDialog(new JFrame(), "Save CSV Network File", FileDialog.SAVE);
+	public void exportTableToCSV(final TableView<MatrixModelTableView> table, Stage stage) throws UNISoNException {
+		final FileChooser file = new FileChooser();
+		file.setTitle("Save CSV Network File");
 		final String CSV_FILE_SUFFIX = ".csv";
 		final String initialValue = "*" + CSV_FILE_SUFFIX;
-		file.setFile(initialValue); // set initial filename filter
-		file.setFilenameFilter((dir, name) -> {
-			if (name.endsWith(CSV_FILE_SUFFIX)) {
-				return true;
-			}
-			return false;
-		});
-		file.show(); // Blocks
+		file.setInitialFileName(initialValue); // set initial filename filter
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Comma-separated values (.csv)",
+				"*" + CSV_FILE_SUFFIX);
+		file.getExtensionFilters().add(extFilter);
+		File archive = file.showSaveDialog(stage);
+		// file.show(); // Blocks
 		String curFile = null;
-		curFile = file.getFile();
+		curFile = archive.getName();
 		if ((curFile != null) && !curFile.equals(initialValue)) {
 
 			if (!curFile.endsWith(CSV_FILE_SUFFIX)) {
 				curFile += CSV_FILE_SUFFIX;
 			}
-			final String filename = file.getDirectory() + curFile;
-
-			this.exportTable(filename, table, fieldNames);
+			final String filename = archive.getAbsolutePath() + curFile;
+			this.exportTable(filename, table);
 		}
 
 	}

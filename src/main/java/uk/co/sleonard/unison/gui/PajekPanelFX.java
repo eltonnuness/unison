@@ -191,11 +191,13 @@ public class PajekPanelFX implements Observer {
 	 */
 	@FXML
 	private void csvButtonFile() {
-		/*
-		 * try { this.csvExporter.exportTableToCSV(this.resultsMatrixTable,
-		 * this.pajekHeader); } catch (final UNISoNException e) {
-		 * e.printStackTrace(); }
-		 */
+
+		try {
+			this.csvExporter.exportTableToCSV(this.resultsMatrixTable, this.stage);
+		} catch (final UNISoNException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	public TextArea getFilePreviewArea() {
@@ -334,7 +336,8 @@ public class PajekPanelFX implements Observer {
 			@Override
 			public void write(final int b) throws IOException {
 				final char letter = (char) b;
-				PajekPanelFX.this.getFilePreviewArea().getText().concat("" + letter);
+				String text = PajekPanelFX.this.getFilePreviewArea().getText();
+				PajekPanelFX.this.getFilePreviewArea().setText(text + "" + letter);
 			}
 
 		};

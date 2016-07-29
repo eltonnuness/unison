@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
@@ -19,15 +20,16 @@ import java.util.Vector;
 
 import org.hibernate.Session;
 
-import javafx.collections.ObservableList;
+import javafx.collections.FXCollections;
 import javafx.embed.swing.SwingNode;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.RadioButton;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -99,11 +101,11 @@ public class PajekPanelFX implements Observer {
 
 	/** The graph scroll pane. */
 	@FXML
-	private ScrollPane graphScrollPane;
+	private Tab graphTab;
 
 	/** The results matrix table. */
 	@FXML
-	private TableView<Object> resultsMatrixTable;
+	private TableView<MatrixModelTableView> resultsMatrixTable;
 
 	/** The save button. */
 	@FXML
@@ -121,9 +123,17 @@ public class PajekPanelFX implements Observer {
 	@FXML
 	public void initialize() {
 		TableColumn columnSubject = new TableColumn<>("Subject");
+		columnSubject.setCellValueFactory(new PropertyValueFactory<>("subject"));
+		columnSubject.setPrefWidth(120);
 		TableColumn columnDate = new TableColumn<>("Date");
+		columnDate.setCellValueFactory(new PropertyValueFactory<>("date"));
+		columnDate.setPrefWidth(120);
 		TableColumn columnFrom = new TableColumn<>("FROM");
+		columnFrom.setCellValueFactory(new PropertyValueFactory<>("from"));
+		columnFrom.setPrefWidth(100);
 		TableColumn columnTo = new TableColumn<>("TO");
+		columnTo.setCellValueFactory(new PropertyValueFactory<>("to"));
+		columnTo.setPrefWidth(100);
 		this.resultsMatrixTable.getColumns().addAll(columnSubject, columnDate, columnFrom, columnTo);
 
 		try {
@@ -290,25 +300,32 @@ public class PajekPanelFX implements Observer {
 	 *             the UNI so n exception
 	 */
 	private void refreshPajekMatrixTable() throws UNISoNException {
-		final ObservableList<Object> model = this.resultsMatrixTable.getItems();
-		model.add(this.getLatestPajekMatrixVector());
+		List<MatrixModelTableView> listMatrixModelTV = new ArrayList<>();
+		Vector<Vector<String>> matrixVector = this.getLatestPajekMatrixVector();
+		for (Vector<String> vector : matrixVector) {
+			MatrixModelTableView mmtv = new MatrixModelTableView();
+			mmtv.setSubject(vector.get(0));
+			mmtv.setDate(vector.get(1));
+			mmtv.setFrom(vector.get(2));
+			mmtv.setTo(vector.get(3));
+			listMatrixModelTV.add(mmtv);
+		}
+		this.resultsMatrixTable.setItems(FXCollections.observableArrayList(listMatrixModelTV));
 
 		// filePreviewArea
 		this.pajekFile = new PajekNetworkFile();
-		// this.pajekFile.createDirectedLinks(new Vector<>(model));
-		// this.graphScrollPane.removeAll(); VERIFY TODO
+		this.pajekFile.createDirectedLinks(matrixVector);
 
 		final GraphPreviewPanel previewPanel = this.pajekFile.getPreviewPanel();
 
-		// SwingNode test
+		// TODO Convert the Swing View Compatibility to JavaFX
 		SwingNode swingNode = new SwingNode();
 		swingNode.setContent(previewPanel);
 		Pane pane = new Pane();
 		pane.getChildren().add(swingNode);
 
-		this.graphScrollPane.setContent(pane);
+		this.graphTab.setContent(pane);
 		previewPanel.repaint();
-		// this.graphScrollPane.setSize(200.0, 200.0);
 
 		// clear down for next set of data
 		this.getFilePreviewArea().setText("");
@@ -392,6 +409,45 @@ public class PajekPanelFX implements Observer {
 
 	protected void setStage(Stage stage) {
 		this.stage = stage;
+	}
+
+	public static class MatrixModelTableView {
+		private String subject;
+		private String date;
+		private String from;
+		private String to;
+
+		public String getSubject() {
+			return this.subject;
+		}
+
+		public void setSubject(String subject) {
+			this.subject = subject;
+		}
+
+		public String getDate() {
+			return this.date;
+		}
+
+		public void setDate(String date) {
+			this.date = date;
+		}
+
+		public String getFrom() {
+			return this.from;
+		}
+
+		public void setFrom(String from) {
+			this.from = from;
+		}
+
+		public String getTo() {
+			return this.to;
+		}
+
+		public void setTo(String to) {
+			this.to = to;
+		}
 	}
 
 }

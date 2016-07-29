@@ -10,6 +10,7 @@
 <?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
 
 <AnchorPane prefHeight="391.0" prefWidth="615.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uk.co.sleonard.unison.gui.PajekPanelFX">
    <children>
@@ -39,9 +40,9 @@
          </tooltip></Button>
       <TabPane layoutX="8.0" layoutY="117.0" prefHeight="270.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE">
         <tabs>
-          <Tab text="Graph">
+          <Tab fx:id="graphTab" text="Graph">
                <content>
-                  <ScrollPane fx:id="graphScrollPane" />
+                  <Pane />
                </content>
           </Tab>
           <Tab text="Matrix">

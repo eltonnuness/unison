@@ -2,14 +2,19 @@ package uk.co.sleonard.unison;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
+import org.hsqldb.util.DatabaseManagerSwing;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import uk.co.sleonard.unison.datahandling.HibernateHelper;
@@ -322,12 +327,55 @@ public class UNISoNControllerFX {
 	 */
 	@FXML
 	private void closeApplication() {
-		Platform.exit();
-		System.exit(1);
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("Quit Application");
+		alert.setContentText("Are you sure?");
+
+		Optional<ButtonType> result = alert.showAndWait();
+
+		if ((result.isPresent()) && (result.get() == ButtonType.OK)) {
+			Platform.exit();
+			System.exit(0);
+		}
+	}
+
+	/**
+	 * Refresh db menu item action performed.
+	 */
+	@FXML
+	private void refreshDBMenuItem() {
+		UNISoNControllerFX.getInstance().getDatabase().refreshDataFromDatabase();
+	}
+
+	/**
+	 * Show db client menu item action performed.
+	 */
+	@FXML
+	private void showDBclientMenuItem() {
+		DatabaseManagerSwing.main(UNISoNTabbedFrameFX.GUI_ARGS);
+	}
+
+	/**
+	 * Delete db menu item action performed.
+	 * 
+	 */
+	@FXML
+	private void deleteDBMenuItem() {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle("DB Refresh");
+		alert.setContentText("This will delete ALL the data. Are you sure?");
+
+		Optional<ButtonType> result = alert.showAndWait();
+
+		if ((result.isPresent()) && (result.get() == ButtonType.OK)) {
+			UNISoNControllerFX.getInstance().getHelper().generateSchema();
+			UNISoNControllerFX.getGui().showAlert("DB refresh complete");
+			UNISoNControllerFX.getInstance().getDatabase().refreshDataFromDatabase();
+		} else
+			UNISoNControllerFX.getGui().showAlert("DB refresh cancelled");
 	}
 
 	private void showErrorMessage(final String messageText) {
-		// this.frame.showErrorMessage(message);
 		UNISoNControllerFX.logger.warn(messageText);
 	}
 

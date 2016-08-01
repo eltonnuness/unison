@@ -71,95 +71,95 @@ public class MessageStoreViewerFX implements Observer, UNISoNLogger {
 	/** -------------------- Components Variables ------------------ */
 	/** The body pane. */
 	@FXML
-	private TextArea bodyPane; // XXX
+	private TextArea bodyPane;
 	/** The body scroll pane. */
 	@FXML
-	private ScrollPane bodyScrollPane; // XXX
+	private ScrollPane bodyScrollPane;
 	/** The crosspost combo box. */
 	@FXML
-	private ComboBox<NewsGroup> crosspostComboBox; // XXX
+	private ComboBox<NewsGroup> crosspostComboBox;
 	/** The filter toggle. */
 	@FXML
-	private ToggleButton filterToggle; // XXX
+	private ToggleButton filterToggle;
 	/** The from date field. */
 	@FXML
-	private TextField fromDateField; // XXX
+	private TextField fromDateField;
 	/** The from date label. */
 	@FXML
-	private Label fromDateLabel; // XXX
+	private Label fromDateLabel;
 	/** The get body button. */
 	// private javax.swing.JButton getBodyButton; Maybe no implemented yet
 	/** The groups hierarchy. */
 	@FXML
-	private TreeView<Object> groupsHierarchy; // XXX
+	private TreeView<Object> groupsHierarchy;
 	/** The groups scroll pane. */
 	@FXML
-	private ScrollPane groupsScrollPane; // XXX
+	private ScrollPane groupsScrollPane;
 	/** The headers button. */
 	@FXML
-	private Button headersButton; // XXX
+	private Button headersButton;
 	/** The location field. */
 	@FXML
-	private TextField locationField; // XXX
+	private TextField locationField;
 	/** The location label. */
 	@FXML
-	private Label locationLabel; // XXX
+	private Label locationLabel;
 	/** The missing messages check. */
 	// private javax.swing.JCheckBox missingMessagesCheck; Maybe no implemented
 	// yet
 	/** The refresh button. */
 	@FXML
-	private Button refreshButton; // XXX
+	private Button refreshButton;
 	/** The sender field. */
 	@FXML
-	private TextField senderField; // XXX
+	private TextField senderField;
 	/** The sender label. */
 	@FXML
-	private Label senderLabel; // XXX
+	private Label senderLabel;
 	/** The sent date field. */
 	@FXML
-	private TextField sentDateField; // XXX
+	private TextField sentDateField;
 	/** The sent date label. */
 	@FXML
-	private Label sentDateLabel; // XXX
+	private Label sentDateLabel;
 	/** The stats tab pane. */
 	// private javax.swing.JTabbedPane statsTabPane; Maybe no implemented yet
 	/** The subject field. */
 	@FXML
-	private TextField subjectField; // XXX
+	private TextField subjectField;
 	/** The subject label. */
 	@FXML
-	private Label subjectLabel; // XXX
+	private Label subjectLabel;
 	/** The to date field. */
 	@FXML
-	private TextField toDateField; // XXX
+	private TextField toDateField;
 	/** The todate label. */
 	@FXML
-	private Label toDateLabel; // XXX
+	private Label toDateLabel;
 	/** The top countries list. */
 	@FXML
-	private ListView<GUIItem<Object>> topCountriesList; // XXX
+	private ListView<GUIItem<Object>> topCountriesList;
 	/** The top countries scroll pane. */
 	@FXML
-	private ScrollPane topCountriesScrollPane; // XXX
+	private ScrollPane topCountriesScrollPane;
 	/** The top groups list. */
 	@FXML
-	private ListView<GUIItem<Object>> topGroupsList; // XXX
+	private ListView<GUIItem<Object>> topGroupsList;
 	/** The top groups scroll pane. */
 	@FXML
-	private ScrollPane topGroupsScrollPane; // XXX
+	private ScrollPane topGroupsScrollPane;
 	/** The top posters list. */
 	@FXML
-	private ListView<GUIItem<Object>> topPostersList; // XXX
+	private ListView<GUIItem<Object>> topPostersList;
 	/** The top posters scroll pane. */
 	@FXML
-	private ScrollPane topPostersScrollPane; // XXX
+	private ScrollPane topPostersScrollPane;
 	/** The topics hierarchy. */
 	@FXML
-	private TreeView<Object> topicsHierarchy; // XXX
+	private TreeView<Object> topicsHierarchy;
 	/** The topics scroll pane. */
 	@FXML
-	private ScrollPane topicsScrollPane; // XXX
+	private ScrollPane topicsScrollPane;
 	/** The session. */
 	private Session session;
 	/** The newsgroup tree root. */

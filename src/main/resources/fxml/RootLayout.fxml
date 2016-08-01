@@ -12,18 +12,18 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane maxHeight="450" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="615.0" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uk.co.sleonard.unison.UNISoNControllerFX">
+<BorderPane maxHeight="450" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="470.0" prefWidth="615.0" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uk.co.sleonard.unison.UNISoNControllerFX">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-                  <MenuItem mnemonicParsing="false" text="Refresh Data">
+                  <MenuItem mnemonicParsing="false" onAction="#refreshDBMenuItem" text="Refresh Data">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="R" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
                   </MenuItem>
-                  <MenuItem mnemonicParsing="false" text="DB GUI">
+                  <MenuItem mnemonicParsing="false" onAction="#showDBclientMenuItem" text="DB GUI">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="SPACE" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>
@@ -38,7 +38,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-                  <MenuItem mnemonicParsing="false" text="Dellete All Data">
+                  <MenuItem mnemonicParsing="false" onAction="#deleteDBMenuItem" text="Dellete All Data">
                      <accelerator>
                         <KeyCodeCombination alt="UP" code="DELETE" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
                      </accelerator>

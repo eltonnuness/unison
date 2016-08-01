@@ -38,6 +38,15 @@ public class UNISoNTabbedFrameFX extends Application {
 	private TabPane tabs;
 	private UNISoNControllerFX unisonController;
 
+	/** The Constant dbDriver. */
+	private final static String dbDriver = "org.hsqldb.jdbcDriver";
+	/** The Constant dbUser. */
+	private final static String dbUser = "sa";
+	/** The Constant DB_URL. */
+	private final static String DB_URL = "jdbc:hsqldb:file:DB/projectDB";
+	public static final String GUI_ARGS[] = { "-driver", UNISoNTabbedFrameFX.dbDriver, "-url",
+			UNISoNTabbedFrameFX.DB_URL, "-user", UNISoNTabbedFrameFX.dbUser, "-noexit" };
+
 	@Override
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
